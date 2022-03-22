@@ -1,24 +1,11 @@
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.List;
 
 public class RosalindHAMM {
-    public static class Dataset {
-        public String firstDNA;
-        public String secondDNA;
-
-        public Dataset(String firstDNA, String secondDNA) {
-            this.firstDNA = firstDNA;
-            this.secondDNA = secondDNA;
-        }
-    }
-
-    private static Dataset readData(String filePath) throws IOException {
+    private static List<String> readData(String filePath) throws IOException {
         Path inputFile = Paths.get(filePath);
-        List<String> lines = Files.readAllLines(inputFile);
-        return new Dataset(lines.get(0), lines.get(1));
+        return Files.readAllLines(inputFile);
     }
 
     private static void writeData(String filePath, Integer data) throws IOException {
@@ -31,18 +18,18 @@ public class RosalindHAMM {
         Files.writeString(outputFile, Integer.toString(data));
     }
 
-    private static Integer countMutations(Dataset data) {
+    private static Integer countMutations(String firstDNA, String secondDNA) {
         Integer mutations = 0;
-        for (int i = 0; i < data.firstDNA.length(); i++) {
-            if (data.firstDNA.charAt(i) != data.secondDNA.charAt(i))
-                mutations++;
+        for (int i = 0; i < firstDNA.length(); i++) {
+            if (firstDNA.charAt(i) != secondDNA.charAt(i))
+            mutations++;
         }
         return mutations;
     }
 
     public static void main(String[] args) throws IOException {
-        Dataset data = readData("input/rosalind_hamm.txt");
-        Integer result = countMutations(data);
+        List<String> data = readData("input/rosalind_hamm.txt");
+        Integer result = countMutations(data.get(0), data.get(1));
         writeData("output/rosalind_hamm.txt", result);
     }
 }
